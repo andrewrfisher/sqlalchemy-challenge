@@ -27,41 +27,26 @@ session = Session(engine)
 
 app=Flask(__name__)
 
-# This function called `calc_temps` will accept start date and end date in the format '%Y-%m-%d' 
-# and return the minimum, average, and maximum temperatures for that range of dates
-#def calc_temps(start_date, end_date):
-# """TMIN, TAVG, and TMAX for a list of dates.
-    
-#Args:
-    #start_date (string): A date string in the format %Y-%m-%d
-    #end_date (string): A date string in the format %Y-%m-%d
-        
-#Returns:
-    #TMIN, TAVG, and TMAX
-    #"""
-    
-    #return session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).\
-        #filter(Measurement.date >= start_date).\
-        #filter(Measurement.date <= end_date).all()
-
 #first route
 @app.route("/")
 def main ():
     #list all routes available
+    
+    docs = f"""Welcome to the Hawaii Climate API!<br/>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br/>
+            Available Routes:<br/>
+            <a href="/api/v1.0/stations"> /api/v1.0/stations</a> ~~~~~ a list of all weather observation stations<br/>
+            <a href ="/api/v1.0/precipitation"> /api/v1.0/precipitation</a>~~ the latest year of precipitation data<br/>
+            <a href ="/api/v1.0/tobs">/api/v1.0/tobs</a>~~ list of the latest year of temperature data<br/>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br/>
+            ~~~ datesearch format: (yyyy-mm-dd)<br/>
+            <a href="/api/v1.0/2015-05-30"> /api/v1.0/2015-05-30</a> ~~~~~~~~~~~ low, high, and average temp for date given and each date after<br/>
+            <a href="/api/v1.0/2015-05-30/2016-01-30">/api/v1.0/2015-05-30/2016-01-30 </a>~~ low, high, and average temp for date given and each date up to and including end date<br/>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br/>
+            data available from 2010-01-01 to 2017-08-23 ~<br/>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"""
+    return docs
 
-    return(f"Welcome to the Hawaii Climate API!<br/>"
-            f"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br/>"
-            f"Available Routes:<br/>"
-            f"/api/v1.0/stations ~~~~~ a list of all weather observation stations<br/>"
-            f"/api/v1.0/precipitaton ~~ the latest year of preceipitation data<br/>"
-            f"/api/v1.0/tobs ~~ list of the latest year of temperature data<br/>"
-            f"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br/>"
-            f"~~~ datesearch format: (yyyy-mm-dd)<br/>"
-            f"/api/v1.0/2015-05-30  ~~~~~~~~~~~ low, high, and average temp for date given and each date after<br/>"
-            f"/api/v1.0/2015-05-30/2016-01-30 ~~ low, high, and average temp for date given and each date up to and including end date<br/>"
-            f"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br/>"
-            f"~ data available from 2010-01-01 to 2017-08-23 ~<br/>"
-            f"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 #next route
 @app.route("/api/v1.0/precipitation")
 def precipitation():
@@ -150,7 +135,6 @@ def temperature():
     return jsonify(temp_list)
 
 #next route
-#how can I get it pull out the date the user types in (activity 10 of hw?)
 @app.route("/api/v1.0/<start>")
 def single_date(start):
 
